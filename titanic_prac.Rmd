@@ -1,7 +1,6 @@
 ---
 title: "titanic_prac"
-output: github_document:
-  html_preview: true
+output: github_document
 
 ---
 
@@ -19,7 +18,7 @@ tit=titanic_train
 head(tit)
 ```
 
-```{r plot1}
+```{r plot1, warning=FALSE}
 ggplot(tit) +
   geom_point(mapping=aes(x=Age,y=Fare, color=Embarked))
 ```
@@ -59,3 +58,48 @@ ggplot(tit, mapping=aes(x=Age, y=Fare))+
 ##filter 조건은 dpylr 패키지가 필요함
 
 ```
+```{r}
+dat1<-filter(tit, Pclass==1)
+head(select(dat1, Age, Pclass, Embarked))
+#Age:Embarked 혹은 -로 포함하지 않음을 표현
+dat2<-mutate(dat1, birth=1900 + Age)
+head(arrange(dat2, Age))
+#transmute는 사용되지 않은 변수를 모두 삭제한다
+```
+
+```{r}
+dat_group<-group_by(tit, Pclass, Embarked)
+dat2<-summarize(dat_group,
+          N=n(),
+          age=mean(Age, na.rm=TRUE))
+ggplot(data=dat2, mapping=aes(x=N, y=age))+
+  geom_point(aes(size=Pclass))
+```
+
+```{r}
+dat_group<-tit %>%
+  group_by(Pclass) %>%
+  summarize(
+          N=n() ,
+          age=mean(Age, na.rm=TRUE)) %>%
+ggplot(mapping=aes(x=N, y=age)) +
+  geom_point(aes(color=Pclass))
+```
+
+
+### tidy data
+```{r}
+x<-tribble( ~key, ~val_x,
+            1, "x1",
+            2, "x2",
+            3, "x3")
+y<-tribble( ~key, ~val_y,
+            1, "y1",
+            2, "y2",
+            4, "y3")
+inner_join(x,y,by="key")
+#semi_join, anti_join
+```
+
+
+
