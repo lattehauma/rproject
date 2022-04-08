@@ -1,6 +1,8 @@
 ---
 title: "ggplot_practice"
-output: github_document
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
@@ -10,6 +12,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r iris}
+library(ggplot2)
+library(titanic)
+library(dplyr)
 tit=titanic_train
 head(tit)
 ```
