@@ -1,8 +1,8 @@
 ---
-title: "ggplot_practice"
-output:
-  html_document:
-    df_print: paged
+title: "titanic_prac"
+output: github_document:
+  html_preview: true
+
 ---
 
 ```{r setup, include=FALSE}
