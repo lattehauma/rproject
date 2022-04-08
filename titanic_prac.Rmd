@@ -1,0 +1,56 @@
+---
+title: "ggplot_practice"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r iris}
+tit=titanic_train
+head(tit)
+```
+
+```{r plot1}
+ggplot(tit) +
+  geom_point(mapping=aes(x=Age,y=Fare, color=Embarked))
+```
+
+```{r plot2}
+ggplot(tit) +
+  geom_point(mapping=aes(x=Age,y=Fare, size=0.2, alpha=Embarked, shape=Embarked))
+```
+
+```{r plot3}
+ggplot(tit) +
+  geom_point(mapping=aes(x=Age,y=Fare), color='coral')
+```
+
+
+```{r}
+ggplot(tit) +
+  geom_point(mapping=aes(x=Age,y=Fare))+
+  facet_wrap(~ Pclass, nrow=3)
+```
+
+```{r}
+ggplot(tit)+
+  geom_point(mapping=aes(x=Age, y=Fare))+
+  facet_grid(Pclass~ Embarked)
+```
+```{r}
+ggplot(tit)+
+  geom_smooth(mapping=aes(x=Age, y=Fare,linetype='line'))
+```
+
+```{r}
+ggplot(tit, mapping=aes(x=Age, y=Fare))+
+  geom_point(mapping=aes(color=Embarked))+
+  geom_smooth(data=filter(tit, Pclass==1), se=FALSE)
+
+##filter 조건은 dpylr 패키지가 필요함
+
+```
