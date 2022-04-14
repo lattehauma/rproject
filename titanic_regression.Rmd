@@ -1,6 +1,8 @@
 ---
 title: "titanic_regression"
-output: github_document
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
@@ -8,7 +10,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
+library(ggplot2)
+library(glmnet)
 library(titanic)
+library(GGally)
 data<-titanic_train
 head(data)
 ```
@@ -21,12 +26,78 @@ ggpairs(data, columns=c(2,8,10,12))
 
 ```{r}
 library(corrplot)
-num_data<-data[,-c(1,4,5,7,9,11,12)]
+num_data<-data[,-c(1,4,5,9,11,12)]
 head(num_data)
 pairs(na.omit(num_data))
 corrplot(cor(na.omit(num_data)),method="number")
 ```
+```{r}
+cor.test(data$Survived, data$Pclass)
+```
 
+```{r}
+cor.test(data$Survived, data$Age)
+```
+
+```{r}
+num_data<-na.omit(num_data)
+model1<-glm(Survived ~ Pclass+Age+SibSp+Parch+Fare, family=gaussian, data=num_data)
+model_fit<-predict(model1,num_data)
+summary(model1)
+```
+
+```{r}
+model2<-glm(Survived ~ Pclass+Age+SibSp+Parch+Fare, family=binomial, data=num_data)
+model2_fit<-predict(model2,num_data, type='response')
+summary(model2)
+```
+
+```{r}
+lambdas <- 10^seq(2, -3, by = -.1)
+x<-as.matrix(num_data[,c(-1)])
+y<-num_data$Survived
+model3<-glmnet(x, y, family=gaussian, data=num_data, alpha=0)
+summary(model3)
+cv_ridge <- cv.glmnet(x, y, alpha = 0)
+optimal_lambda <- cv_ridge$lambda.min
+optimal_lambda
+model3_fit <- predict(model3, s = optimal_lambda, newx = x)
+```
+
+```{r}
+model4<-glmnet(x, y, family=gaussian, data=num_data, alpha=1, lambda=lambdas, standardize = TRUE)
+cv_lasso <- cv.glmnet(x, y, alpha = 1, lambda = lambdas)
+optimal_lambda <- cv_lasso$lambda.min
+optimal_lambda
+model4_fit <- predict(model4, s = optimal_lambda, newx = x)
+```
+
+```{r}
+model5<-glm(Survived ~ Pclass+Age+SibSp+Parch, family=binomial, data=num_data)
+model5_fit<-predict(model5,num_data, type='response')
+summary(model5)
+```
+
+
+```{r}
+
+eval_results <- function(true, predicted) {
+  SSE <- sum((predicted - true)^2)
+  SST <- sum((true - mean(true))^2)
+  R_square <- 1 - SSE / SST
+  RMSE = sqrt(SSE/714)
+data.frame(
+  RMSE = RMSE,
+  Rsquare = R_square
+)
+}
+
+print(rbind(eval_results(y,model_fit),
+        eval_results(y,model2_fit),
+        eval_results(y,model3_fit),
+        eval_results(y,model4_fit),
+        eval_results(y,model5_fit)))
+```
 
 
 
