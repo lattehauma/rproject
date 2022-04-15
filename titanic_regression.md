@@ -305,6 +305,115 @@ summary(model5)
     ## Number of Fisher Scoring iterations: 4
 
 ``` r
+num2_data<-data[,-c(1,4,9,11)]
+num2_data<-na.omit(num2_data)
+model6<-glm(Survived ~ factor(Sex)+Pclass+Age+SibSp+Parch+Fare+factor(Embarked), family=gaussian, data=num2_data)
+model6_fit<-predict(model6,num2_data)
+summary(model6)
+```
+
+    ## 
+    ## Call:
+    ## glm(formula = Survived ~ factor(Sex) + Pclass + Age + SibSp + 
+    ##     Parch + Fare + factor(Embarked), family = gaussian, data = num2_data)
+    ## 
+    ## Deviance Residuals: 
+    ##      Min        1Q    Median        3Q       Max  
+    ## -1.09344  -0.22857  -0.06788   0.22815   0.99815  
+    ## 
+    ## Coefficients:
+    ##                     Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)        1.4919161  0.2813984   5.302 1.54e-07 ***
+    ## factor(Sex)male   -0.4854369  0.0315205 -15.401  < 2e-16 ***
+    ## Pclass            -0.1873163  0.0228871  -8.184 1.28e-15 ***
+    ## Age               -0.0064061  0.0011324  -5.657 2.24e-08 ***
+    ## SibSp             -0.0507454  0.0174357  -2.910  0.00372 ** 
+    ## Parch             -0.0106791  0.0190483  -0.561  0.57523    
+    ## Fare               0.0001963  0.0003468   0.566  0.57162    
+    ## factor(Embarked)C -0.0895853  0.2735887  -0.327  0.74343    
+    ## factor(Embarked)Q -0.1883890  0.2822174  -0.668  0.50465    
+    ## factor(Embarked)S -0.1559910  0.2728347  -0.572  0.56768    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## (Dispersion parameter for gaussian family taken to be 0.1459323)
+    ## 
+    ##     Null deviance: 172.21  on 713  degrees of freedom
+    ## Residual deviance: 102.74  on 704  degrees of freedom
+    ## AIC: 664
+    ## 
+    ## Number of Fisher Scoring iterations: 2
+
+``` r
+model7<-glm(Survived ~ factor(Sex)+Pclass+Age+SibSp+Parch+Fare, family=gaussian, data=num2_data)
+model7_fit<-predict(model7,num2_data)
+summary(model7)
+```
+
+    ## 
+    ## Call:
+    ## glm(formula = Survived ~ factor(Sex) + Pclass + Age + SibSp + 
+    ##     Parch + Fare, family = gaussian, data = num2_data)
+    ## 
+    ## Deviance Residuals: 
+    ##      Min        1Q    Median        3Q       Max  
+    ## -1.12760  -0.23300  -0.06906   0.23060   0.99592  
+    ## 
+    ## Coefficients:
+    ##                   Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)      1.3655885  0.0776984  17.576  < 2e-16 ***
+    ## factor(Sex)male -0.4884545  0.0313469 -15.582  < 2e-16 ***
+    ## Pclass          -0.1939308  0.0225256  -8.609  < 2e-16 ***
+    ## Age             -0.0065274  0.0011276  -5.789 1.07e-08 ***
+    ## SibSp           -0.0533214  0.0173685  -3.070  0.00222 ** 
+    ## Parch           -0.0121149  0.0190044  -0.637  0.52402    
+    ## Fare             0.0003072  0.0003405   0.902  0.36730    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## (Dispersion parameter for gaussian family taken to be 0.1460023)
+    ## 
+    ##     Null deviance: 172.21  on 713  degrees of freedom
+    ## Residual deviance: 103.22  on 707  degrees of freedom
+    ## AIC: 661.38
+    ## 
+    ## Number of Fisher Scoring iterations: 2
+
+``` r
+model8<-glm(Survived ~ factor(Sex)+Pclass+Age+SibSp+Fare, family=gaussian, data=num2_data)
+model8_fit<-predict(model8,num2_data)
+summary(model8)
+```
+
+    ## 
+    ## Call:
+    ## glm(formula = Survived ~ factor(Sex) + Pclass + Age + SibSp + 
+    ##     Fare, family = gaussian, data = num2_data)
+    ## 
+    ## Deviance Residuals: 
+    ##     Min       1Q   Median       3Q      Max  
+    ## -1.1387  -0.2367  -0.0664   0.2303   0.9975  
+    ## 
+    ## Coefficients:
+    ##                   Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)      1.3634960  0.0775965  17.572  < 2e-16 ***
+    ## factor(Sex)male -0.4843177  0.0306550 -15.799  < 2e-16 ***
+    ## Pclass          -0.1955316  0.0223758  -8.739  < 2e-16 ***
+    ## Age             -0.0064945  0.0011259  -5.768  1.2e-08 ***
+    ## SibSp           -0.0567988  0.0164828  -3.446 0.000603 ***
+    ## Fare             0.0002676  0.0003347   0.800 0.424188    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## (Dispersion parameter for gaussian family taken to be 0.1458799)
+    ## 
+    ##     Null deviance: 172.21  on 713  degrees of freedom
+    ## Residual deviance: 103.28  on 708  degrees of freedom
+    ## AIC: 659.79
+    ## 
+    ## Number of Fisher Scoring iterations: 2
+
+``` r
 eval_results <- function(true, predicted) {
   SSE <- sum((predicted - true)^2)
   SST <- sum((true - mean(true))^2)
@@ -320,7 +429,10 @@ print(rbind(eval_results(y,model_fit),
         eval_results(y,model2_fit),
         eval_results(y,model3_fit),
         eval_results(y,model4_fit),
-        eval_results(y,model5_fit)))
+        eval_results(y,model5_fit),
+        eval_results(y,model6_fit),
+        eval_results(y,model7_fit),
+        eval_results(y,model8_fit)))
 ```
 
     ##        RMSE   Rsquare
@@ -329,3 +441,6 @@ print(rbind(eval_results(y,model_fit),
     ## 3 0.4407437 0.1946127
     ## 4 0.4407133 0.1947238
     ## 5 0.4398557 0.1978549
+    ## 6 0.3793262 0.4034342
+    ## 7 0.3802248 0.4006046
+    ## 8 0.3803340 0.4002601

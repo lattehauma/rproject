@@ -76,6 +76,26 @@ model5_fit<-predict(model5,num_data, type='response')
 summary(model5)
 ```
 
+```{r}
+num2_data<-data[,-c(1,4,9,11)]
+num2_data<-na.omit(num2_data)
+model6<-glm(Survived ~ factor(Sex)+Pclass+Age+SibSp+Parch+Fare+factor(Embarked), family=gaussian, data=num2_data)
+model6_fit<-predict(model6,num2_data)
+summary(model6)
+```
+
+```{r}
+model7<-glm(Survived ~ factor(Sex)+Pclass+Age+SibSp+Parch+Fare, family=gaussian, data=num2_data)
+model7_fit<-predict(model7,num2_data)
+summary(model7)
+```
+
+```{r}
+model8<-glm(Survived ~ factor(Sex)+Pclass+Age+SibSp+Fare, family=gaussian, data=num2_data)
+model8_fit<-predict(model8,num2_data)
+summary(model8)
+```
+
 
 ```{r}
 
@@ -94,7 +114,10 @@ print(rbind(eval_results(y,model_fit),
         eval_results(y,model2_fit),
         eval_results(y,model3_fit),
         eval_results(y,model4_fit),
-        eval_results(y,model5_fit)))
+        eval_results(y,model5_fit),
+        eval_results(y,model6_fit),
+        eval_results(y,model7_fit),
+        eval_results(y,model8_fit)))
 ```
 
 
