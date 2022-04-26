@@ -54,12 +54,12 @@ summary(model2)
 lambdas <- 10^seq(2, -3, by = -.1)
 x<-as.matrix(num_data[,c(-1)])
 y<-num_data$Survived
-model3<-glmnet(x, y, family=gaussian, data=num_data, alpha=0)
+model3<-glmnet(x, y, family=binomial, data=num_data, alpha=0)
 summary(model3)
 cv_ridge <- cv.glmnet(x, y, alpha = 0)
 optimal_lambda <- cv_ridge$lambda.min
 optimal_lambda
-model3_fit <- predict(model3, s = optimal_lambda, newx = x)
+model3_fit <- predict(model3, s = optimal_lambda, newx = x, type='response')
 ```
 
 ```{r}
@@ -79,8 +79,8 @@ summary(model5)
 ```{r}
 num2_data<-data[,-c(1,4,9,11)]
 num2_data<-na.omit(num2_data)
-model6<-glm(Survived ~ factor(Sex)+Pclass+Age+SibSp+Parch+Fare+factor(Embarked), family=gaussian, data=num2_data)
-model6_fit<-predict(model6,num2_data)
+model6<-glm(Survived ~ factor(Sex)+Pclass+Age+SibSp+Parch+Fare+factor(Embarked), family=binomial, data=num2_data)
+model6_fit<-predict(model6,num2_data,type='response')
 summary(model6)
 ```
 
